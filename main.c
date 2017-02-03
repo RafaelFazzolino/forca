@@ -15,6 +15,7 @@ do código.
 int main(){
 	int opcao;
 	do{
+		printf("\e[H\e[2J");
 		opcao = menu();
 		switch(opcao){
 			case 1: 

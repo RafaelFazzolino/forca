@@ -43,22 +43,23 @@ void play(){
 	int i, j, perdeu =0;
 	char alfabeto[26];
 	char chute, continua = 'S';
-	int achou=0;
+	int achou=0, pontos;
 	string_alvo = malloc(sizeof(char*));
 	string_decifrada = malloc(sizeof(char*));
 
 	fp = fopen("palavras.txt", "r");
 	if(fp){
-		while((fscanf(fp, "%s", string_alvo) != EOF) && (continua == 'S') && (perdeu == 0)){
-			
+		while((fscanf(fp, "%s", string_alvo) != EOF) && (toupper(continua) == 'S') && (perdeu == 0)){
+			fscanf(fp,"%d",&pontos);
 			decifra_string(string_decifrada, string_alvo);
 
 			gerencia_alfabeto('.', alfabeto);
 
 			for(i=0 ; i<6 ; i++){
+				printf("\e[H\e[2J");
 				printf("1-cabeça, 2-tronco, 3-braço direito, 4-braço esquerdo\n5-perna direita e 6-perna esquerda\n");
-				printf("Chances já executadas:");
 				if(i>0){//Printando as partes já desenhadas
+					printf("Chances já executadas:");
 					for(j=1 ; j<=i ; j++){
 						printf("%d ", j);
 					}
@@ -76,23 +77,29 @@ void play(){
 				do{
 				scanf(" %c", &chute);
 
-				achou = gerencia_alfabeto(chute, alfabeto);
+				achou = gerencia_alfabeto(toupper(chute), alfabeto);
 					
 				}while(achou == 0);
 
 				verifica_letra(chute, string_alvo, string_decifrada);
 				if(strcmp(string_decifrada, string_alvo) == 0){
+					printf("\e[H\e[2J");
+					printf("\n------------------------------------------------------\n");
 					printf("PARABENS! Voce decifrou a palavra!\nA palavra e: %s\n", string_decifrada);
+					printf("\n------------------------------------------------------\n");
 					break;
 				}else{
 					if(i == 5){
+						printf("\e[H\e[2J");
+						printf("\n------------------------------------------------------\n");
 						printf("Infelizmente voce perdeu, boa sorte na próxima vez!\n");
+						printf("\n------------------------------------------------------\n");
 						perdeu = 1;
 					}
 				}
 			}
-			printf("Deseja continuar jogando?(S/N)");
-			scanf(" %c", &continua);		
+			printf("\n\nDeseja continuar jogando?(S/N)");
+			scanf(" %c", &continua);	
 		}
 	}
 
