@@ -1,42 +1,6 @@
 #include "util.h"
 
-void decifra_string(char * string, char *string_alvo){
-	int i;
-	for	(i=0 ; i<strlen(string_alvo) ; i++){
-		string[i] = '_';
-	}
-}
 
-int verifica_letra(char letra, char * string_alvo, char * string_decifrada){
-	int i, achou = 0;
-	for(i=0; i<strlen(string_alvo) ; i++){
-		if(tolower(string_alvo[i]) == tolower(letra)){
-			string_decifrada[i] = toupper(letra);
-			achou = 1;
-		}
-	}	
-	return achou;
-}
-
-int gerencia_alfabeto(char letra, char *alfabeto){
-	int j, achou=0;
-	if(letra == '.'){
-		for(j=0 ; j<=25 ; j++){
-			alfabeto[j] = 65+j;
-		}
-	}else{
-		for(j=0 ; j<=25 ; j++){
-			if(letra == alfabeto[j]){
-				alfabeto[j] = ' ';
-				achou = 1;
-			}
-		}
-		if(achou == 0){
-			printf("Letra ja utilizada, tente novamente!\n");
-		}
-	}
-	return achou;//se retornar zero, é pq a letra já foi utilizada anteriormente.
-}
 
 void play(){
 	FILE *fp;
@@ -93,12 +57,13 @@ void play(){
 					getchar();
 					getchar();
 				}
-				if(strcmp(string_decifrada, string_alvo) == 0){
+				if(compara_string(string_alvo, string_decifrada) == 0){
 					printf("\e[H\e[2J");
+					pontuacao_total += pontuacao;
 					printf("\n------------------------------------------------------\n");
 					printf("PARABENS! Voce decifrou a palavra!\nA palavra e: %s\nVoce ganhou %d pontos!\n", string_decifrada, pontuacao);
+					printf("Pontuacao total = %d\n", pontuacao_total);
 					printf("\n------------------------------------------------------\n");
-					pontuacao_total += pontuacao;
 					break;
 				}else{
 					if(i == 5){
@@ -111,7 +76,11 @@ void play(){
 				}
 			}
 			printf("\n\nDeseja continuar jogando?(S/N)");
-			scanf(" %c", &continua);	
+			scanf(" %c", &continua);
+			while(continua != 's' && continua != 'S' && continua != 'N' && continua !=  'n'){
+				printf("Entrada invalida, tente novamente:");
+				scanf(" %c", &continua);
+			}	
 		}
 	}
 
