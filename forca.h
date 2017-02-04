@@ -7,13 +7,15 @@ void decifra_string(char * string, char *string_alvo){
 	}
 }
 
-void verifica_letra(char letra, char * string_alvo, char * string_decifrada){
-	int i;
+int verifica_letra(char letra, char * string_alvo, char * string_decifrada){
+	int i, achou = 0;
 	for(i=0; i<strlen(string_alvo) ; i++){
 		if(tolower(string_alvo[i]) == tolower(letra)){
 			string_decifrada[i] = toupper(letra);
+			achou = 1;
 		}
 	}	
+	return achou;
 }
 
 int gerencia_alfabeto(char letra, char *alfabeto){
@@ -43,20 +45,23 @@ void play(){
 	int i, j, perdeu =0;
 	char alfabeto[26];
 	char chute, continua = 'S';
-	int achou=0, pontos;
+	int achou=0, pontuacao, pontuacao_total=0, letra_correta=0;
 	string_alvo = malloc(sizeof(char*));
 	string_decifrada = malloc(sizeof(char*));
 
 	fp = fopen("palavras.txt", "r");
 	if(fp){
 		while((fscanf(fp, "%s", string_alvo) != EOF) && (toupper(continua) == 'S') && (perdeu == 0)){
-			fscanf(fp,"%d",&pontos);
+			printf("*** JOGO DA FORCA ***");
+			fscanf(fp,"%d",&pontuacao);
 			decifra_string(string_decifrada, string_alvo);
 
 			gerencia_alfabeto('.', alfabeto);
-
-			for(i=0 ; i<6 ; i++){
+			i=0;
+			while(i<6){
 				printf("\e[H\e[2J");
+				printf("PONTUACAO ACUMULADA = %d\n", pontuacao_total);
+				printf("PONTUACAO DESTA PALAVRA = %d\n", pontuacao);
 				printf("1-cabeça, 2-tronco, 3-braço direito, 4-braço esquerdo\n5-perna direita e 6-perna esquerda\n");
 				if(i>0){//Printando as partes já desenhadas
 					printf("Chances já executadas:");
@@ -66,8 +71,6 @@ void play(){
 				}
 
 				printf("\nA palavra eh: %s\n", string_decifrada);
-
-				printf("Voce tem %d tentativas! Escolha uma das seguintes letras:\n", 6-i);
 
 				printf("------------------------------------------------------\n");
 				for(j=0 ; j<=25 ; j++){
@@ -81,12 +84,21 @@ void play(){
 					
 				}while(achou == 0);
 
-				verifica_letra(chute, string_alvo, string_decifrada);
+				letra_correta = verifica_letra(chute, string_alvo, string_decifrada);
+				if(letra_correta == 0){
+					printf("Letra incorreta, voce ainda tem %d chances!\n", 5-i);
+					printf("Tecle enter para continuar..\n");
+					i++;
+					pontuacao = pontuacao - 5;
+					getchar();
+					getchar();
+				}
 				if(strcmp(string_decifrada, string_alvo) == 0){
 					printf("\e[H\e[2J");
 					printf("\n------------------------------------------------------\n");
-					printf("PARABENS! Voce decifrou a palavra!\nA palavra e: %s\n", string_decifrada);
+					printf("PARABENS! Voce decifrou a palavra!\nA palavra e: %s\nVoce ganhou %d pontos!\n", string_decifrada, pontuacao);
 					printf("\n------------------------------------------------------\n");
+					pontuacao_total += pontuacao;
 					break;
 				}else{
 					if(i == 5){
