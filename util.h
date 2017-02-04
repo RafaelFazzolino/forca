@@ -7,7 +7,7 @@ int menu(){
 	printf("------------------------ MENU ----------------------------\n");
 	printf("Digite a opcao desejada:\n");
 	printf("1-Jogar\n");
-	printf("5-Sair\n");
+	printf("2-Sair\n");
 	scanf("%d", &opcao);
 	return opcao;
 }
