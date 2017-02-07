@@ -20,6 +20,8 @@ void play(){
 	char chute, continua = 'S';
 	int achou=0, pontuacao, letra_correta=0;
 
+	
+
 	/*Alocando espaço de memórica para os ponteiros stirng_alvo e string_decifrada*/
 	string_alvo = malloc(sizeof(char*));
 	string_decifrada = malloc(sizeof(char*));
@@ -28,22 +30,21 @@ void play(){
 	if(fp){/*Caso tenha sido aberto com sucesso*/
 		/*Enquanto houver palavras e o jogador desejar continuar o jogo e que ele não tenha perdido, o loop continua*/
 		while((fscanf(fp, "%s", string_alvo) != EOF) && (toupper(continua) == 'S') && (perdeu == 0)){
-			printf("*** JOGO DA FORCA ***");
 			fscanf(fp,"%d",&pontuacao);/*Leio a pontuação da palavra*/
+			limpa_forca();
+			parte_corpo = 0;
 			decifra_string();/*Manipulo a string_decifrada com a quantidade de '_' necessária*/
 
 			gerencia_alfabeto('.');/*Crio o vetor alfabeto*/
 			i=0;
-			while(i<6){
+			while(parte_corpo<6){
 				printf("\e[H\e[2J");/*Limpando a tela (linux)*/
+				printf("*** JOGO DA FORCA ***\n");
 				printf("PONTUACAO ACUMULADA = %d\n", pontuacao_total);
 				printf("PONTUACAO DESTA PALAVRA = %d\n", pontuacao);
-				printf("1-cabeça, 2-tronco, 3-braço direito, 4-braço esquerdo\n5-perna direita e 6-perna esquerda\n");
 				if(i>0){/*Printando as partes já desenhadas (i>0 pq o usuário tem que ter tentado pelo menos uma vez)*/
-					printf("Chances já executadas:");
-					for(parte_corpo=1 ; parte_corpo<=i ; parte_corpo++){
-						printf("%d ", parte_corpo);
-					}
+					cria_forca(parte_corpo);
+					imprime_forca();
 				}
 
 				printf("\nA palavra eh: %s\n", string_decifrada);
@@ -65,7 +66,7 @@ void play(){
 				if(letra_correta == 0){/*Se não existir*/
 					printf("Letra incorreta, voce ainda tem %d chances!\n", 5-i);
 					printf("Tecle enter para continuar..\n");
-					i++;
+					parte_corpo++;
 					pontuacao = pontuacao - 5;/*diminuo 5 pontos*/
 					getchar();
 					getchar();
@@ -79,14 +80,17 @@ void play(){
 					printf("\n------------------------------------------------------\n");
 					break;
 				}else{
-					if(i == 5){ /*Caso ele tenha perdido todas as chances sem decifrar a palavra*/
+					if(parte_corpo == 6){ /*Caso ele tenha perdido todas as chances sem decifrar a palavra*/
 						printf("\e[H\e[2J");/*Limpando a tela (linux)*/
+						cria_forca(6);
+						imprime_forca();
 						printf("\n------------------------------------------------------\n");
 						printf("Infelizmente voce perdeu, boa sorte na próxima vez!\n");
 						printf("\n------------------------------------------------------\n");
 						perdeu = 1;/*Registrando que ele perdeu, para verificação do while*/
 					}
 				}
+				i++;
 			}
 			fflush(stdin);
 			printf("\n\nDeseja continuar jogando?(S/N)");

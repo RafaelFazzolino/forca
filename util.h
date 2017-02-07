@@ -18,7 +18,100 @@ que estão substituindo as encontradas na biblioteca string.h
 	char * string_alvo;/*variável onde será guardada a plavra lida no arquivo*/
 	char * string_decifrada;/*String que será manipulada com as letras do usuário*/
 	char alfabeto[26];/*todas as possibilidades de letras.. será alterado sempre que uma letra for utilizada*/
-	int pontuacao_total=0, parte_corpo;
+	int pontuacao_total=0, parte_corpo=0;
+	char forca[23][31];
+
+
+void limpa_forca(){
+	int i, j;
+	for(i=0 ; i<23 ; i++){
+		for(j=0 ; j<30 ; j++){
+			forca[i][j] = ' ';
+		}
+	}
+}
+
+void cria_forca(int num){
+	int i,j;
+
+	switch(num){
+		case 1:
+			for(i=0 ; i<23 ; i++){
+				for(j=0 ; j<30 ; j++){
+					forca[i][j] = ' ';
+				}
+			}
+
+			for(i=0 ; i<23 ; i++){
+				forca[i][30] = '\0';
+			}
+
+			for(i=12 ; i<16 ; i++){
+				forca[1][i] = '*';
+			}
+
+			for(i=1 ; i<5 ; i++){
+				forca[i][12] = '*';
+			}
+
+			for(i=1 ; i<4 ; i++){
+				forca[i][16] = '*';
+			}
+
+			for(i=12 ; i<=16 ; i++){
+				forca[4][i] = '*';
+			}
+			break;
+		case 2:
+			for(i=5 ; i<=12 ; i++){
+				forca[i][14] = '|';
+			}
+			break;
+		case 3:
+			//braco direito
+			forca[7][15] = '/';
+			forca[6][17] = '/';
+			forca[5][19] = '/';
+			break;
+		case 4:
+			//braco esquerdo
+			forca[7][13] = '\\';
+			forca[6][11] = '\\';
+			forca[5][9] = '\\';
+			break;
+		case 5:
+			//Perna direita
+			forca[13][15] = '\\';
+			forca[14][16] = '\\';
+			forca[15][17] = '\\';
+			forca[16][18] = '\\';
+			forca[17][19] = '\\';
+			break;
+		case 6:
+			//perna esquerda
+			forca[13][13] = '/';
+			forca[14][12] = '/';
+			forca[15][11] = '/';
+			forca[16][10] = '/';
+			forca[17][9] = '/';
+			break;
+	}
+}
+
+
+
+void imprime_forca(){
+	int i, j;
+	for(i=0 ; i<23 ; i++){
+		for(j=0 ; j<31 ; j++){
+			if(forca[i][j] == '\0'){
+				printf("%c\n", forca[i][j]);
+			}else{
+				printf("%c", forca[i][j]);
+			}
+		}
+	}
+}
 
 /*Função que imprime as opções do usuário, recebendo a opção desejada*/
 int menu(){
