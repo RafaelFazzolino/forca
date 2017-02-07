@@ -31,71 +31,110 @@ void limpa_forca(){
 	}
 }
 
+void inicia_forca(){
+	int i, j;
+	for(i=0 ; i<23 ; i++){
+		for(j=0 ; j<30 ; j++){
+			forca[i][j] = ' ';
+		}
+	}
+	for(i=0 ; i<23 ; i++){
+		forca[i][30] = '\0';
+	}
+	forca[1][1] = '+';
+	for(i=2 ; i<20 ; i++){
+		forca[1][i] = '-';
+	}
+	forca[1][20] = '+';
+	forca[1][21] = ' ';
+	forca[1][22] = ' ';
+
+	for(i=2 ; i<=18 ; i++){
+		forca[i][4] = '|';
+	}
+
+	for(i=3 ; i<6 ; i++){
+		forca[19][i] = '+';
+	}
+	for(i=2 ; i<7 ; i++){
+		forca[20][i] = '+';
+	}
+	for(i=1 ; i<8 ; i++){
+		forca[21][i] = '+';
+	}
+	
+}
+
 void cria_forca(int num){
 	int i,j;
 
 	switch(num){
-		case 1:
-			for(i=0 ; i<23 ; i++){
-				for(j=0 ; j<30 ; j++){
-					forca[i][j] = ' ';
-				}
+		case 1:/*Cabeça*/
+			for(i=23 ; i<=25 ; i++){
+				forca[5][i] = '_';
 			}
 
-			for(i=0 ; i<23 ; i++){
-				forca[i][30] = '\0';
-			}
-
-			for(i=12 ; i<16 ; i++){
-				forca[1][i] = '*';
-			}
-
-			for(i=1 ; i<5 ; i++){
-				forca[i][12] = '*';
-			}
-
-			for(i=1 ; i<4 ; i++){
-				forca[i][16] = '*';
-			}
-
-			for(i=12 ; i<=16 ; i++){
-				forca[4][i] = '*';
-			}
+			forca[6][22] = '/';
+			forca[6][26] = '\\';
+			forca[7][22] = '\\';
+			forca[7][26] = '/';
+			forca[7][23] = '_';
+			forca[7][24] = ' ';
+			forca[7][25] = '_';			
 			break;
-		case 2:
-			for(i=5 ; i<=12 ; i++){
-				forca[i][14] = '|';
+		case 2:/*Tronco*/
+			forca[8][24] = '|';
+			forca[9][24] = '+';
+			for(i=10 ; i<=12 ; i++){
+				forca[i][24] = '|';
 			}
+			forca[9][25] = '-';
+			forca[9][23] = '-';
 			break;
 		case 3:
 			//braco direito
-			forca[7][15] = '/';
-			forca[6][17] = '/';
-			forca[5][19] = '/';
+			forca[10][26] = '\\';
+			forca[11][27] = '\\';
+			forca[12][28] = '\\';
 			break;
 		case 4:
 			//braco esquerdo
-			forca[7][13] = '\\';
-			forca[6][11] = '\\';
-			forca[5][9] = '\\';
+			forca[10][22] = '/';
+			forca[11][21] = '/';
+			forca[12][20] = '/';
 			break;
 		case 5:
 			//Perna direita
-			forca[13][15] = '\\';
-			forca[14][16] = '\\';
-			forca[15][17] = '\\';
-			forca[16][18] = '\\';
-			forca[17][19] = '\\';
+			forca[13][25] = '\\';
+			forca[14][26] = '\\';
+			forca[15][27] = '\\';
+			forca[16][28] = '\\';
 			break;
 		case 6:
 			//perna esquerda
-			forca[13][13] = '/';
-			forca[14][12] = '/';
-			forca[15][11] = '/';
-			forca[16][10] = '/';
-			forca[17][9] = '/';
+			forca[13][23] = '/';
+			forca[14][22] = '/';
+			forca[15][21] = '/';
+			forca[16][20] = '/';
 			break;
 	}
+}
+
+void forca_fim(){
+	forca[2][23] = '|';
+	forca[3][23] = '|';
+	forca[4][23] = '+';
+	forca[4][22] = '_';
+	forca[4][21] = '_';
+	forca[5][20] = '/';
+	forca[6][19] = '/';
+	forca[7][19] = '\\';
+	forca[8][20] = '-';
+	forca[8][21] = '-';
+	forca[8][22] = '-';
+	forca[8][24] = '-';
+	forca[8][25] = '-';
+	forca[8][26] = '-';
 }
 
 

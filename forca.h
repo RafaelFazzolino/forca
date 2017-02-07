@@ -32,6 +32,7 @@ void play(){
 		while((fscanf(fp, "%s", string_alvo) != EOF) && (toupper(continua) == 'S') && (perdeu == 0)){
 			fscanf(fp,"%d",&pontuacao);/*Leio a pontuação da palavra*/
 			limpa_forca();
+			inicia_forca();
 			parte_corpo = 0;
 			decifra_string();/*Manipulo a string_decifrada com a quantidade de '_' necessária*/
 
@@ -42,6 +43,7 @@ void play(){
 				printf("*** JOGO DA FORCA ***\n");
 				printf("PONTUACAO ACUMULADA = %d\n", pontuacao_total);
 				printf("PONTUACAO DESTA PALAVRA = %d\n", pontuacao);
+				imprime_forca();
 				if(i>0){/*Printando as partes já desenhadas (i>0 pq o usuário tem que ter tentado pelo menos uma vez)*/
 					cria_forca(parte_corpo);
 					imprime_forca();
@@ -83,10 +85,11 @@ void play(){
 					if(parte_corpo == 6){ /*Caso ele tenha perdido todas as chances sem decifrar a palavra*/
 						printf("\e[H\e[2J");/*Limpando a tela (linux)*/
 						cria_forca(6);
-						imprime_forca();
 						printf("\n------------------------------------------------------\n");
 						printf("Infelizmente voce perdeu, boa sorte na próxima vez!\n");
 						printf("\n------------------------------------------------------\n");
+						forca_fim();
+						imprime_forca();
 						perdeu = 1;/*Registrando que ele perdeu, para verificação do while*/
 					}
 				}
