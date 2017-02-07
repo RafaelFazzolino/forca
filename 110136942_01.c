@@ -14,17 +14,18 @@ do código.
 */
 int main(){
 	int opcao;
-	do{
+	do{/*Criando um loop para menu, antes de entrar efetivamente no jogo*/
 		printf("\e[H\e[2J");
-		opcao = menu();
-		switch(opcao){
+		opcao = menu();/*Printa o menu e obtem a opção desejada do aluno*/
+		switch(opcao){/*Fiz um switch pois pretendia adicionar algumas outras funcionalidades, 
+		como incluir novas palavras no arquivo txt, por exemplo.. acho que incluo isto para a parte 2 */
 			case 1: 
-				printf("\e[H\e[2J");
-				play();
+				printf("\e[H\e[2J");/*Limpando a tela (linux)*/
+				play();/*Chamando o jogo*/
 		}
 		
 
-	}while(opcao != 2);
+	}while(opcao != 2);/*Se for, fim*/
 
 	printf("\n--------------------------------------------------\n");
 	printf("The End..\n");
